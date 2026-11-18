@@ -730,60 +730,408 @@ The cat meows: Meow!
 
 ## 18. ATM Banking Simulation System
 
-A bank wants to develop a simple ATM simulation program to help customers perform basic banking operations. Write a menu-driven Java program that allows a customer to perform the following operations:
-
-Check Account Balance.
-
-Deposit Money into the Account.
-
-Withdraw Money from the Account.
-
-Display Account Holder Details.
-
-Exit.
-
-Program requirements:
-
-Initially, the account should have a balance of ₹5,000.
-
-The user should be able to deposit any valid amount.
-
-The user should not be allowed to withdraw more money than the available balance.
-
-The program should display the updated balance after every deposit or withdrawal.
-
+A bank wants to develop a simple ATM simulation program to help customers perform basic banking operations. Write a menu-driven Java program that allows a customer to perform the following operations:\
+Check Account Balance.\
+Deposit Money into the Account.\
+Withdraw Money from the Account.\
+Display Account Holder Details.\
+Exit.\
+Program requirements:\
+Initially, the account should have a balance of ₹5,000.\
+The user should be able to deposit any valid amount.\
+The user should not be allowed to withdraw more money than the available balance.\
+The program should display the updated balance after every deposit or withdrawal.\
 The menu should continue to appear until the user selects Exit.
+
+### ATM Banking Simulation System - Code
+
+```java
+import java.util.*;
+
+class BankSystem {
+
+    String accountName;
+    double balance;
+
+    BankSystem(String name) {
+        accountName = name;
+        balance = 5000;
+    }
+
+    int checkBalance() {
+        System.out.println("Your current balance is " + balance);
+        return 1;
+    }
+
+    int deposit(double money) {
+        balance += money;
+        System.out.println("RS." + money + " Succesfully deposit to your account.");
+        checkBalance();
+        return 1;
+    }
+
+    int withdraw(double money) {
+        if (balance > money) {
+            balance -= money;
+            System.out.println("RS." + money + " Succesfully withdraw to your account.");
+            checkBalance();
+        } else {
+            System.out.println("Insufficient balance in your account");
+        }
+        return 1;
+    }
+
+    int accDetails() {
+        System.out.println("Account Holder Name: " + accountName);
+        System.out.println("Total balance: " + balance);
+        return 1;
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Account holder name: ");
+        String name = sc.nextLine();
+        BankSystem customer1 = new BankSystem(name);
+        boolean menuOpen = true;
+        while (menuOpen) {
+            System.out.println(
+                    "1.Check Account Balance\n2.Deposit Money into the Account\n3.Withdraw Money from the Account\n4.Display Account Holder Details\n0.Exit");
+            int choice = sc.nextInt();
+            switch (choice) {
+                case 0:
+                    sc.close();
+                    return;
+                case 1:
+                    customer1.checkBalance();
+                    break;
+                case 2:
+                    System.out.print("Enter amount to deposit: ");
+                    double money = sc.nextDouble();
+                    customer1.deposit(money);
+                    break;
+                case 3:
+                    System.out.print("Enter amount to withdraw: ");
+                    money = sc.nextDouble();
+                    customer1.withdraw(money);
+                    break;
+                case 4:
+                    customer1.accDetails();
+                    break;
+                default:
+                    System.out.println("Select between 0-4 option...");
+                    menuOpen = true;
+            }
+        }
+        sc.close();
+    }
+}
+```
+
+### ATM Banking Simulation System - OUTPUT
+
+```text
+Enter Account holder name: Aditya Das
+1.Check Account Balance
+2.Deposit Money into the Account
+3.Withdraw Money from the Account
+4.Display Account Holder Details
+0.Exit
+1
+Your current balance is 5000.0
+1.Check Account Balance
+2.Deposit Money into the Account
+3.Withdraw Money from the Account
+4.Display Account Holder Details
+0.Exit
+2
+Enter amount to deposit: 25000
+RS.25000.0 Succesfully deposit to your account.
+Your current balance is 30000.0
+1.Check Account Balance
+2.Deposit Money into the Account
+3.Withdraw Money from the Account
+4.Display Account Holder Details
+0.Exit
+3
+Enter amount to withdraw: 50000
+Insufficient balance in your account
+1.Check Account Balance
+2.Deposit Money into the Account
+3.Withdraw Money from the Account
+4.Display Account Holder Details
+0.Exit
+4
+Account Holder Name: Aditya Das
+Total balance: 30000.0
+1.Check Account Balance
+2.Deposit Money into the Account
+3.Withdraw Money from the Account
+4.Display Account Holder Details
+0.Exit
+3
+Enter amount to withdraw: 200
+RS.200.0 Succesfully withdraw to your account.
+Your current balance is 29800.0
+1.Check Account Balance
+2.Deposit Money into the Account
+3.Withdraw Money from the Account
+4.Display Account Holder Details
+0.Exit
+0
+```
 
 ## 19. Railway Ticket Reservation System
 
-A railway reservation counter wants to develop a simple ticket booking application. Write a menu-driven Java program that allows passengers to perform the following operations:
-
-Display Available Train Details.
-
-Book a Train Ticket.
-
-Cancel a Train Ticket.
-
-Display Passenger Details.
-
-Check Available Seats.
-
-Exit.
-
-Program requirements:
-
-Maintain train details such as Train Number, Train Name, Source and Destination.
-
-Initially, assume that 50 seats are available.
-
-Accept passenger name, age and number of tickets during booking.
-
-Reduce the available seats after successful booking.
-
-Increase the available seats after successful cancellation.
-
-Do not allow booking if sufficient seats are unavailable.
-
-Display the passenger and booking details.
-
+A railway reservation counter wants to develop a simple ticket booking application. Write a menu-driven Java program that allows passengers to perform the following operations:\
+Display Available Train Details.\
+Book a Train Ticket.\
+Cancel a Train Ticket.\
+Display Passenger Details.\
+Check Available Seats.\
+Exit.\
+Program requirements:\
+Maintain train details such as Train Number, Train Name, Source and Destination.\
+Initially, assume that 50 seats are available.\
+Accept passenger name, age and number of tickets during booking.\
+Reduce the available seats after successful booking.\
+Increase the available seats after successful cancellation.\
+Do not allow booking if sufficient seats are unavailable.\
+Display the passenger and booking details.\
 Continue displaying the menu until the user selects Exit.
+
+### Railway Ticket Reservation System - Code
+
+```java
+import java.util.Scanner;
+
+class RailwayReservation {
+
+    Scanner sc = new Scanner(System.in);
+
+    int trainNumber = 12345;
+    String trainName = "Express Train";
+    String source = "Kolkata";
+    String destination = "Delhi";
+
+    int availableSeats = 50;
+
+    String passengerName = "";
+    int passengerAge;
+    int bookedTickets = 0;
+    boolean isBooked = false;
+
+    // Display Train Details
+    void displayTrainDetails() {
+        System.out.println("\n----- TRAIN DETAILS -----");
+        System.out.println("Train Number: " + trainNumber);
+        System.out.println("Train Name: " + trainName);
+        System.out.println("Source: " + source);
+        System.out.println("Destination: " + destination);
+        System.out.println("Available Seats: " + availableSeats);
+    }
+
+    // Book Train Ticket
+    void bookTicket() {
+        if (availableSeats == 0) {
+            System.out.println("No seats available!");
+            return;
+        }
+        if (isBooked) {
+            System.out.println("A booking already exists. Cancel it before making another booking.");
+            return;
+        }
+        sc.nextLine();
+        System.out.print("Enter Passenger Name: ");
+        passengerName = sc.nextLine();
+        System.out.print("Enter Passenger Age: ");
+        passengerAge = sc.nextInt();
+        System.out.print("Enter Number of Tickets: ");
+        int tickets = sc.nextInt();
+        if (tickets > 0 && tickets <= availableSeats) {
+            bookedTickets = tickets;
+            availableSeats -= tickets;
+            isBooked = true;
+            System.out.println("\nTicket Booked Successfully!");
+            System.out.println("Passenger Name: " + passengerName);
+            System.out.println("Tickets Booked: " + bookedTickets);
+
+        } else {
+            System.out.println("Booking Failed! Insufficient seats or invalid ticket count.");
+        }
+    }
+
+    // Cancel Train Ticket
+    void cancelTicket() {
+        if (!isBooked) {
+            System.out.println("No booking found to cancel!");
+            return;
+        }
+        availableSeats += bookedTickets;
+        System.out.println("Ticket Cancelled Successfully!");
+        System.out.println("Cancelled Tickets: " + bookedTickets);
+        bookedTickets = 0;
+        passengerName = "";
+        passengerAge = 0;
+        isBooked = false;
+    }
+
+    // Display Passenger Details
+    void displayPassengerDetails() {
+        if (!isBooked) {
+            System.out.println("No passenger booking details available!");
+            return;
+        }
+        System.out.println("\n----- PASSENGER DETAILS -----");
+        System.out.println("Passenger Name: " + passengerName);
+        System.out.println("Passenger Age: " + passengerAge);
+        System.out.println("Train Number: " + trainNumber);
+        System.out.println("Train Name: " + trainName);
+        System.out.println("Number of Tickets: " + bookedTickets);
+    }
+
+    // Check Available Seats
+    void checkAvailableSeats() {
+        System.out.println("\nAvailable Seats: " + availableSeats);
+    }
+}
+
+class Main{
+    public static void main(String[] args) {
+        int choice;
+        Scanner sc = new Scanner(System.in);
+        RailwayReservation p1 = new RailwayReservation();
+        do {
+            System.out.println("\n===== RAILWAY RESERVATION SYSTEM =====");
+            System.out.println("1. Display Train Details");
+            System.out.println("2. Book Train Ticket");
+            System.out.println("3. Cancel Train Ticket");
+            System.out.println("4. Display Passenger Details");
+            System.out.println("5. Check Available Seats");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    p1.displayTrainDetails();
+                    break;
+                case 2:
+                    p1.bookTicket();
+                    break;
+                case 3:
+                    p1.cancelTicket();
+                    break;
+                case 4:
+                    p1.displayPassengerDetails();
+                    break;
+                case 5:
+                    p1.checkAvailableSeats();
+                    break;
+                case 6:
+                    System.out.println("Thank you for using Railway Reservation System!");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        } while (choice != 6);
+        sc.close();
+    }
+}
+```
+
+### Railway Ticket Reservation System - OUTPUT
+
+```text
+===== RAILWAY RESERVATION SYSTEM =====
+1. Display Train Details
+2. Book Train Ticket
+3. Cancel Train Ticket
+4. Display Passenger Details
+5. Check Available Seats
+6. Exit
+Enter your choice: 1
+
+----- TRAIN DETAILS -----
+Train Number: 12345
+Train Name: Express Train
+Source: Kolkata
+Destination: Delhi
+Available Seats: 50
+
+===== RAILWAY RESERVATION SYSTEM =====
+1. Display Train Details
+2. Book Train Ticket
+3. Cancel Train Ticket
+4. Display Passenger Details
+5. Check Available Seats
+6. Exit
+Enter your choice: 2
+
+Enter Passenger Name: Aditya Das
+Enter Passenger Age: 20
+Enter Number of Tickets: 5
+
+Ticket Booked Successfully!
+Passenger Name: Aditya Das
+Tickets Booked: 5
+
+===== RAILWAY RESERVATION SYSTEM =====
+1. Display Train Details
+2. Book Train Ticket
+3. Cancel Train Ticket
+4. Display Passenger Details
+5. Check Available Seats
+6. Exit
+Enter your choice: 4
+
+----- PASSENGER DETAILS -----
+Passenger Name: Aditya Das
+Passenger Age: 20
+Train Number: 12345
+Train Name: Express Train
+Number of Tickets: 5
+
+===== RAILWAY RESERVATION SYSTEM =====
+1. Display Train Details
+2. Book Train Ticket
+3. Cancel Train Ticket
+4. Display Passenger Details
+5. Check Available Seats
+6. Exit
+Enter your choice: 5
+
+Available Seats: 45
+
+===== RAILWAY RESERVATION SYSTEM =====
+1. Display Train Details
+2. Book Train Ticket
+3. Cancel Train Ticket
+4. Display Passenger Details
+5. Check Available Seats
+6. Exit
+Enter your choice: 3
+Ticket Cancelled Successfully!
+Cancelled Tickets: 5
+
+===== RAILWAY RESERVATION SYSTEM =====
+1. Display Train Details
+2. Book Train Ticket
+3. Cancel Train Ticket
+4. Display Passenger Details
+5. Check Available Seats
+6. Exit
+Enter your choice: 5
+
+Available Seats: 50
+
+===== RAILWAY RESERVATION SYSTEM =====
+1. Display Train Details
+2. Book Train Ticket
+3. Cancel Train Ticket
+4. Display Passenger Details
+5. Check Available Seats
+6. Exit
+Enter your choice: 6
+Thank you for using Railway Reservation System!
+```
